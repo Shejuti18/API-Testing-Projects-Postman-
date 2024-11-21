@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "b16b9149-9e66-4bec-af2c-3ce06d1b5406",
+		"name": "GoRestAPI_Chaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39607560"
+	},
+	"item": [
+		{
+			"name": "CreateUser",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random=Math.random().toString(36).substring(2);\r",
+							"\r",
+							"var useremail=\"abc\"+random+\"@gmail.com\";\r",
+							"var username= \"A\"+random;\r",
+							"\r",
+							"pm.environment.set(\"email_env\",useremail);\r",
+							"pm.environment.set(\"name_env\",username);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"userid_env\",jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\":\"{{name_env}}\", \r\n  \"gender\":\"male\", \r\n  \"email\":\"{{email_env}}\",\r\n  \"status\":\"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://gorest.co.in/public/v2/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating json fields in the response. validate krtesi je data post krsi shetai get kore pachi naki \r",
+							"\r",
+							"pm.test(\"value of JSON fields\", () =>{\r",
+							"var jsonData=pm.response.json();\r",
+							"\r",
+							"pm.expect(jsonData.id).to.eql(pm.environment.get(\"userid_env\"));\r",
+							"pm.expect(jsonData.email).to.eql(pm.environment.get(\"email_env\"));\r",
+							"pm.expect(jsonData.name).to.eql(pm.environment.get(\"name_env\"));\r",
+							"// as post e environment variable create krsi so ota diyei ekhane evabe check krte hbe value.\r",
+							"\r",
+							"\r",
+							"}\r",
+							");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://gorest.co.in//public/v2/users/{{userid_env}}\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var random=Math.random().toString(36).substring(2);\r",
+							"\r",
+							"var useremail=\"abc\"+random+\"@gmail.com\";\r",
+							"var username= \"A\"+random;\r",
+							"\r",
+							"pm.environment.set(\"email_env\",useremail);\r",
+							"pm.environment.set(\"name_env\",username);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\":\"{{name_env}}\", \r\n  \"email\":\"{{email_env}}\",\r\n  \"status\":\"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://gorest.co.in/public/v2/users/{{userid_env}}\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.unset(\"userid_env\");\r",
+							"pm.environment.unset(\"email_env\");\r",
+							"pm.environment.unset(\"name_env\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "https://gorest.co.in/public/v2/users/{{userid_env}}"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "372c4865736fd847287a2abfeb610da0dfd38e363e648ce37725142aa5da3030"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
