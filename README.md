@@ -1,4 +1,4 @@
-GoRest API Testing:(video 6)
+GoRest API Testing:
 
 Gorest APi url : https://gorest.co.in/
 
